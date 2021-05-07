@@ -16,13 +16,13 @@ services:
   dotnet_app:
     build: ./Web
     ports:
-      - "80:80"
+      - "8080:80"
     # depends_on:
     #   - mysql_db
 
   nginx:
     image: nginx
-    depends_on: :
+    depends_on:
       - dotnet_app
     volumes:
       - "./etc/nginx/conf.d/:/etc/nginx/conf.d/"
