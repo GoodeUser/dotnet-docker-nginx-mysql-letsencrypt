@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  # mysql_db:
+  #   image: mysql:5.7
+  #   volumes:
+  #     - db_data:/var/lib/mysql
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+  #     MYSQL_DATABASE: dotnetappdb
+  #     MYSQL_USER: dotnetappdb
+  #     MYSQL_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+  #   container_name: dotnet_mysql_db
+
+  dotnet_app:
+    build: ./Web
+    ports:
+      - "80:80"
+    # depends_on:
+    #   - mysql_db
+
+  nginx:
+    image: nginx
+    depends_on: :
+      - dotnet_app
+    volumes:
+      - "./etc/nginx/conf.d/:/etc/nginx/conf.d/"
+    environment:
+      VIRTUAL_HOST: kylegoo.de
+      LETSENCRYPT_HOST: kylegoo.de
+      LETSENCRYPT_EMAIL: goodelkyle@gmail.com
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./nginx/vhost.d:/etc/nginx/vhost.d"
+      - "./nginx/html:/usr/share/nginx/html"
+      - "./nginx/certs:/etc/nginx/certs"
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+
+  letsencrypt-nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    volumes_from:
+      - "nginx-proxy"
