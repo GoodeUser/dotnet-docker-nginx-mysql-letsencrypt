@@ -17,6 +17,7 @@ services:
     build: ./Web
     ports:
       - "8080"
+    restart: always
     # depends_on:
     #   - mysql_db
 
