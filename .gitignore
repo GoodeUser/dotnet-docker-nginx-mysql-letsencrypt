@@ -1,4 +1,5 @@
-
+**/obj
+**/bin
 **/obj/
 **/bin/
 Web/obj
@@ -6,3 +7,5 @@ Web/bin
 .env
 
 Web/.vs/
+
+.DS_Store
