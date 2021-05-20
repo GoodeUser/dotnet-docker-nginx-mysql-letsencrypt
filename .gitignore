@@ -1,11 +1,7 @@
-**/obj
-**/bin
 **/obj/
 **/bin/
-Web/obj
-Web/bin
+**/.vs/
+**/.vs/
+**/.vscode/
 .env
-
-Web/.vs/
-
 .DS_Store
